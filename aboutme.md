@@ -1,16 +1,13 @@
 ---
 layout: page
 title: About me
-subtitle: Why you'd want to go on a date with me
+subtitle: Scientist - Avid Student
 ---
 
-My name is Inigo Montoya. I have the following qualities:
+Hello, and welcome to my humble site. My name is Joseph, I am an insatiousably curious person. I am currently pursuing my Masters in Statistics, a fascinating field of mathematics that I chose to stop being ignorant about. It's is also a wonderful toolkit to adopt in our ever flooding production of data.
 
-- I rock a great mustache
-- I'm extremely loyal to my family
+What to expect?
+- Blog of post of my personal scientific interests. 
+- I enjoy Sauces
 
-What else do you need?
 
-### my history
-
-To be honest, I'm having some trouble remembering right now, so why don't you just watch [my movie](http://en.wikipedia.org/wiki/The_Princess_Bride_%28film%29) and it will answer **all** your questions.
