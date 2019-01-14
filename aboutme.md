@@ -9,7 +9,7 @@ Hello, and welcome to my humble site. I have spent the past 5 years of my life i
 As my site is coming together, please take a look as some other interesting palces on the internet. 
 
 *Check these out:
-+[Brandon Roher's Blog, a lot a machine learning topics!](https://brohrer.github.io/blog.html)
-+[Geeks for Geeks, fun compsci community.](https://www.geeksforgeeks.org/)
-+[Nicholas Smith, fascinating data science blog!](https://nicholastsmith.wordpress.com/)
-+[Project Euler, get practice working on fun math problems!](https://projecteuler.net/news)
+*[Brandon Roher's Blog, a lot a machine learning topics!](https://brohrer.github.io/blog.html)
+*[Geeks for Geeks, fun compsci community.](https://www.geeksforgeeks.org/)
+*[Nicholas Smith, fascinating data science blog!](https://nicholastsmith.wordpress.com/)
+*[Project Euler, get practice working on fun math problems!](https://projecteuler.net/news)
