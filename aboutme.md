@@ -4,7 +4,7 @@ title: About me
 subtitle: Scientist & Avid Student
 ---
 
-Hello, and welcome to my humble site. I have spent the past 5 years of my life indulging my curiousity of the physical sciences. My  intention with this website is to share some of the topics that I explore. Currently my site is under some construction, and will be for a short time as juggle 2 jobs, school, and pursuing a higher career in science. 
+Hello, and welcome to my humble site. I have spent the past 5 years of my life indulging my curiousity of the physical sciences. My  intention with this website is to share some of the topics that I explore. Currently my site is under some construction, and will be for a short time as juggle 2 jobs, school, and make time for friends and family. 
 
 As my site is coming together, please take a look as some other interesting palces on the internet. 
 
