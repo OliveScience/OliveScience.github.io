@@ -6,7 +6,7 @@ to do is simply outline what you can expect to see on my site, my
 interests, and current occupation.
 
 First off, my writing style is bland. It lacks flavor. It's chicken
-filleted without seasoning. In this vein, I aim to be concise in
+filleted without seasoning. In this vain, I aim to be concise in
 explaining ideas and working through projects together. At any rate,
 feel free to comment with criticism.
 
