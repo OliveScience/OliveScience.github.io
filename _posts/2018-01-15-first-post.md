@@ -25,5 +25,5 @@ company. I might occasionally share my experiences in those roles.
 Well, that is all for my first post. Thank you and I'll write you again
 soon.
 
-[It's me!](/img/26685171_1555234681218869_2645651240845979927_o.jpg)
+![It's me!](/img/26685171_1555234681218869_2645651240845979927_o.jpg)
       
