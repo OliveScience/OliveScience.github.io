@@ -4,7 +4,7 @@
 # baseurl is the website's URL without the hostname
 
 # If you are building a simple GitHub user page (https://username.github.io) then use these settings:
-url: "https://OliveScience.github.io"
+url: "https://JOliveira.github.io"
 baseurl: ""
 
 # If you are building a GitHub project page then use these settings:
@@ -14,7 +14,7 @@ baseurl: ""
 # Of course don't forget to change the username and projectname to YOUR username and project
 
 # Name of website
-title: OliveScience
+title: Joseph Oliveira - Data Science
 
 # Short description of your site
 description: Home
@@ -27,8 +27,8 @@ navbar-links:
   Resources:
     - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
     - Learn markdown: "http://www.markdowntutorial.com/"
-    - GitHub Pages: "https://github.com/OliveScience"
-  Author's home: "olivescience.github.io"
+    - GitHub Pages: "https://github.com/JOliveira"
+  Author's home: "JOliveira.github.io"
 
 # Image to show in the navigation bar - image must be a square (width = height)
 # Remove this parameter if you don't want an image in the navbar
@@ -42,15 +42,15 @@ navbar-links:
 
 # Personalize the colors in your website. Colour values can be any valid CSS colour
 
-navbar-col: "#9ACD32"
-navbar-text-col: "#404040"
-navbar-children-col: "#9ACD32"
+navbar-col: "#4e598c"
+navbar-text-col: "#f9c784"
+navbar-children-col: "#f9c784"
 page-col: "#FFFFFF"
-link-col: "#008AFF"
-hover-col: "#0085A1"
-footer-col: "#9ACD32"
-footer-text-col: "#777777"
-footer-link-col: "#404040"
+link-col: "#ff8c42"
+hover-col: "#fcaf58"
+footer-col: "#f9c784"
+footer-text-col: "#f9c784"
+footer-link-col: "#ff8c42"
 
 # Alternatively, the navbar, footer, and page background can be set to use background images
 # instead of colour
@@ -74,7 +74,7 @@ social-network-links:
   rss: true
   email: "JDOliveira144@gmail.com"
 # facebook: 
-  github: OliveScience
+  github: JOliveira
 #  twitter: daattali
 #  reddit: yourname
 #  google-plus: +DeanAttali
@@ -99,7 +99,7 @@ share-links-active:
 
 # How to display the link to the website in the footer
 # Remove this if you don't want a link in the footer
-url-pretty: "OliveScience.github.io"  # eg. "deanattali.com/beautiful-jekyll"
+url-pretty: "JOliveira.github.io"  # eg. "deanattali.com/beautiful-jekyll"
 
 # --- Web Statistics Section --- #
 
