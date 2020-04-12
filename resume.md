@@ -9,36 +9,38 @@ I am interested in developing myself into the subject matter expert within your 
 
 ---
 
-## Contact Details
-    
-    * Phone: (919) 757-2416
-    * Email: JDOliveira@gmail.com
-
-## Education
-
-    |            School              | Year Complete | Degree  | Subject(s) |
-    |:------------------------------:|--------------:|:-------:|:----------:|
-    | North Carolina State University|     2020      |Master's |Statistics  |
-    | Barton College                 |     2014      |B.S.     |Mathematics |
-    | Barton College                 |     2014      |B.S.     |Chemistry   |
-
 ## Key Skills
 
-    * *R Statistical Software*
+    - *R Statistical Software*
         * Tidyverse
         * Shiny Dashboarding
         * RMarkdown
-    * *Python*
-        * NumPy
-        * SciPy
-        * Pandas
-    * *SQL*
-        * PostgreSQL
-        * pgAdmin
-    * Advanced Statistical Methodologies
-        * Linear Modeling and Machine Learning Techniques
-        * Splines
-        * LASSO and Ridge Regression
+    - *Python*
+        - NumPy
+        - SciPy
+        - Pandas
+    - *SQL*
+        - PostgreSQL
+        - pgAdmin
+    - Advanced Statistical Methodologies
+        - Linear Modeling and Machine Learning Techniques
+        - Splines
+        - LASSO and Ridge Regression
+
+## Contact Details
+    
+    - Phone: (919) 757-2416
+    - Email: JDOliveira@gmail.com
+
+## Education
+
+    |            School                | Year Complete  | Degree    | Subject(s)   |
+    | :------------------------------: | --------------:| :-------: | :----------: |
+    | North Carolina State University  |     2020       | Master's  | Statistics   |
+    | Barton College                   |     2014       | B.S.      | Mathematics  |
+    | Barton College                   |     2014       | B.S.      | Chemistry    |
+
+
 
 ---
 
