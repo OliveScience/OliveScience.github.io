@@ -11,15 +11,15 @@ I am interested in developing myself into the subject matter expert within your 
 
 ## Key Skills
 
-    - *R Statistical Software*
-        * Tidyverse
-        * Shiny Dashboarding
-        * RMarkdown
-    - *Python*
+    - ***R Statistical Software***
+        - Tidyverse
+        - Shiny Dashboarding
+        - RMarkdown
+    - ***Python***
         - NumPy
         - SciPy
         - Pandas
-    - *SQL*
+    - ***SQL***
         - PostgreSQL
         - pgAdmin
     - Advanced Statistical Methodologies
