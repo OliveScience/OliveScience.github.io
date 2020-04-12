@@ -24,6 +24,8 @@ description: Home
 # List of links in the navigation bar
 navbar-links:
   About Me: "aboutme"
+    - Professional: "https://github.com/Resume"
+    - Personal: "https://github.com/aboutme"
   Resources:
     - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
     - Learn markdown: "http://www.markdowntutorial.com/"
