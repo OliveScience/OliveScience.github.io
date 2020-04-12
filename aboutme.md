@@ -4,9 +4,7 @@ title: About me
 subtitle: Scientist & Avid Student
 ---
 
-Hello, and welcome to my humble site. I have spent the past 5 years of my life indulging my curiousity of the physical sciences. My  intention with this website is to share some of the topics that I explore. Currently my site is under some construction, and will be for a short time. 
 
-As my site is coming together, please take a look as some other interesting palces on the internet. 
 
 Links save lives!:
 * [Brandon Roher's Blog, a lot a machine learning topics!](https://brohrer.github.io/blog.html)
