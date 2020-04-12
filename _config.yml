@@ -24,7 +24,7 @@ description: Home
 # List of links in the navigation bar
 navbar-links:
   About Me:
-    - Professional: "https://9Olive.github.io/Resume"
+    - Professional: "https://9Olive.github.io/resume"
     - Personal: "https://9Olive.github.io/aboutme"
   Resources:
     - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
