@@ -41,3 +41,12 @@ I am interested in developing myself into the subject matter expert within your 
 ---
 
 ## Experience
+
+2019 - 2020
+- Fleet Feet - Junior Data Analyst
+    - Analysis lead for the Fleet Feet Rewards Program
+    - Monthly and weekly analytical reports for Leadership Team and Vendors
+    - Conduct revenue attibution for various marketing projects
+    - Resource for all customer data. Pulled, munged, and presented insights key business personnel.
+    - Create dashboards and static pdf reports to summarize data
+
