@@ -11,21 +11,21 @@ I am interested in developing myself into the subject matter expert within your 
 
 ## Key Skills
 
-    - ***R Statistical Software***
-        - Tidyverse
-        - Shiny Dashboarding
-        - RMarkdown
-    - ***Python***
-        - NumPy
-        - SciPy
-        - Pandas
-    - ***SQL***
-        - PostgreSQL
-        - pgAdmin
-    - Advanced Statistical Methodologies
-        - Linear Modeling and Machine Learning Techniques
-        - Splines
-        - LASSO and Ridge Regression
+- ***R Statistical Software***
+    - Tidyverse
+    - Shiny Dashboarding
+    - RMarkdown
+- ***Python***
+    - NumPy
+    - SciPy
+    - Pandas
+- ***SQL***
+    - PostgreSQL
+    - pgAdmin
+- ***Advanced Statistical Methodologies***
+    - Linear Modeling and Machine Learning Techniques
+    - Splines
+    - LASSO and Ridge Regression
 
 ## Contact Details
     
