@@ -19,7 +19,7 @@ I am interested in developing myself into the subject matter expert within your 
     - Pandas
 - ***SQL***
     - PostgreSQL
-    - pgAdmin
+    - Rstudio API, Python API, and pgAdmin
 - ***Advanced Statistical Methodologies***
     - Linear Modeling and Machine Learning Techniques
     - Splines
