@@ -1,3 +1,8 @@
+---
+layout: post
+title: Avocado Prices Pt 1
+---
+
 Introduction
 ============
 
