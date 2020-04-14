@@ -6,7 +6,7 @@ subtitle: Masters of Statistics, BS in Mathematics and Chemistry
 
 
 ## Objective
-I am interested in developing myself into the subject matter expert within your organization. I began my career as a pharmaceutical lab chemist. In my former roles, the core of my technical philosphy was shaped through application of the scientific method. I specifically acquired a taste for decyphering, analyzing, and summarizing data. Ultimately, my interests led me to seek out Statistics. The past two years I have been able to study statistical theory while implementing practical solutions within businesses. The interplay of my academic experience and professional training has has helped me build a pragmatic technical foundation that is sensitive to business resources. Below you will find my qualifications, education, contact details, and work experience.
+I am interested in developing myself into the Lead Data Scientist within your organization. I began my career as a pharmaceutical lab chemist. In my former roles, the core of my technical philosphy was shaped through application of the scientific method. I specifically acquired a taste for decyphering, analyzing, and summarizing data. Ultimately, my interests led me to seek out Statistics. The past two years I have been able to study statistical theory while implementing practical solutions within businesses. The interplay of my academic experience and professional training has has helped me build a pragmatic technical foundation that is sensitive to business resources. Below you will find my qualifications, education, contact details, and work experience.
 
 ## Key Skills
 
