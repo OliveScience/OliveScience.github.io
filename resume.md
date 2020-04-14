@@ -1,11 +1,11 @@
 ---
 layout: page
-title: My Professional Experience
+title: Professional Experience
 subtitle: Masters of Statistics, BS in Mathematics and Chemistry
 ---
 
 ## Professional Objective
-I am interested in developing myself into the subject matter expert within your organization. I sprouted in my career as a pharmaceutical lab chemist. In those former roles, the core of my technical philosphy was shaped through rehersal of the scientific method. Additionally, I acquired a taste for decyphering, analyzing, and summarizing data. My professional interest led me to seek out Statistics. The past two years I have had the rare opportunity to study theoretical statistical methods while implementing practical solutions within a business. I look forward to working my scientific and statistical toolkit on your data to transform complex business practices in to levers and buttons to accomplish your mission. Below you will find my contact details, education, qualifications, and work experience.
+I am interested in developing myself into the subject matter expert within your organization. I began my career as a pharmaceutical lab chemist. In those former roles, the core of my technical philosphy was shaped through practice of the scientific method. I specifically acquired a taste for decyphering, analyzing, and summarizing data. Ultimately, my interests led me to seek out Statistics. The past two years I have been able to study statistical theory while implementing practical solutions within a businesses. The interplay of my academic and professional experience has has helped me build a practical technical foundation that is sensitive to business timelines. Below you will find my qualifications, education, contact details, and work experience.
 
 ## Key Skills
 
@@ -25,11 +25,6 @@ I am interested in developing myself into the subject matter expert within your 
     - Splines
     - LASSO and Ridge Regression
 
-## Contact Details
-    
-- Phone: (919) 757-2416
-- Email: JDOliveira@gmail.com
-
 ## Education
 
 |            School                | Year Complete  | Degree    | Subject(s)   |
@@ -38,7 +33,10 @@ I am interested in developing myself into the subject matter expert within your 
 | Barton College                   |     2014       | B.S.      | Mathematics  |
 | Barton College                   |     2014       | B.S.      | Chemistry    |
 
-
+## Contact Details
+    
+- Phone: (919) 757-2416
+- Email: JDOliveira@gmail.com
 
 ---
 
