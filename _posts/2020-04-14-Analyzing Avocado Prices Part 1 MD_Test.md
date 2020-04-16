@@ -308,8 +308,10 @@ avocados %>%
   scale_x_continuous(labels = scales::dollar_format(), 
                      breaks = scales::pretty_breaks(n = 12))
 ```
+<center>
+<img src = "/_posts/avocados_files/figure-markdown_github/unnamed-chunk-8-1.png", alt = "None">
+<br>
 
-![density-plot1](/avocados_files/figure-markdown_github/unnamed-chunk-8-1.png){:class="img-responsive"}
 
 We see a right skewed bell shaped distribution that might be bimodal.
 Maybe it is best to look at one slice of time.
@@ -326,7 +328,8 @@ avocados %>%
                      breaks = scales::pretty_breaks(n = 12))
 ```
 
-![density-plot22](/_post/avocados_files/figure-markdown_github/unnamed-chunk-9-1.png)
+
+![density-plot22](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 Our two humps are still there. This might be due to the type of Avocado.
 Organic vs. Conventional.
