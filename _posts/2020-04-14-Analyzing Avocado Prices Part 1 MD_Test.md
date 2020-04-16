@@ -326,7 +326,7 @@ avocados %>%
                      breaks = scales::pretty_breaks(n = 12))
 ```
 
-![density-plot2](/_post/avocados_files/figure-markdown_github/unnamed-chunk-9-1.png){:class="img-responsive"}
+![density-plot22](/_post/avocados_files/figure-markdown_github/unnamed-chunk-9-1.png){:class="img-responsive"}
 
 Our two humps are still there. This might be due to the type of Avocado.
 Organic vs. Conventional.
