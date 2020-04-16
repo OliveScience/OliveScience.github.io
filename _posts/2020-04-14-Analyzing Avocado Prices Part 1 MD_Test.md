@@ -1,3 +1,8 @@
+---
+layout: page
+title: Avocados Dashboard Backend Analysis
+---
+
 Introduction
 ============
 
