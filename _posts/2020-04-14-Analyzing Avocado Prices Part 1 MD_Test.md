@@ -3,7 +3,7 @@ layout: page
 title: Avocados Dashboard Backend Analysis
 ---
 
-Introduction
+# Introduction
 ---
 
 Holly is a Regional Manager of a coffee shop chain is looking to bring
@@ -30,7 +30,7 @@ In this post we cover:
 -   Exploratory Data Analysis
 -   Visualizing the Data
 
-Exploratory Data Analysis
+# Exploratory Data Analysis
 ---
 
 To start, here is an excert from the data source.
@@ -293,7 +293,7 @@ avocados %>%
   filter(!region %in% c('WestTexNewMexico')) -> avocados
 ```
 
-Visualizing data
+# Visualizing data
 ---
 
 Let’s start by visulizing Average Price
