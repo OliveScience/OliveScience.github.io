@@ -24,8 +24,7 @@ Big Picture Objective
 -   Predict the retail cost of avocados for regions of interest
 -   Develop a price model to profit off the Avocado
 
-In this post we cover:
-----------------------
+**In this post we cover:**
 
 -   Exploratory Data Analysis
 -   Visualizing the Data
@@ -53,9 +52,9 @@ More info about the Avocados dataset can be found
 We start by viewing a summary of our dataset, type of avocados, and the
 regions.
 
-``` r
+{% highlight r %}
 avocados %>% summary()
-```
+{% endhighlight %}
 
     ##        X1             Date             AveragePrice    Total Volume     
     ##  Min.   : 0.00   Min.   :2015-01-04   Min.   :0.440   Min.   :      85  
@@ -86,15 +85,15 @@ avocados %>% summary()
     ##  3rd Qu.:2017                     
     ##  Max.   :2018
 
-``` r
+{% highlight r %}
 unique(avocados$type)
-```
+{% endhighlight %}
 
     ## [1] "conventional" "organic"
 
-``` r
+{% highlight r %}
 unique(avocados$region)
-```
+{% endhighlight %}
 
     ##  [1] "Albany"              "Atlanta"             "BaltimoreWashington"
     ##  [4] "Boise"               "Boston"              "BuffaloRochester"   
@@ -131,7 +130,7 @@ From the summary, we notice a couple of things.
 
 I will compare New York to Los Angeles and California.
 
-``` r
+{% highlight r %}
 avocados %>%
   
   # Regions to compare
@@ -153,7 +152,7 @@ avocados %>%
   
   # For legibility
   mutate_if(is.numeric, function(x) {scales::dollar(x, accuracy = 1e4)})
-```
+{% endhighlight %}
 
     ## `mutate_if()` ignored the following grouping variables:
     ## Column `type`
@@ -172,7 +171,7 @@ avocados %>%
 From the table above, it’s easy to see that NewYork refers to the city
 and not the state. I will keep NewYork.
 
-``` r
+{% highlight r %}
 avocados %>%
   filter(!region %in% c('Midsouth', 'Northeast', 'SouthCentral', 'Southeast', 'TotalUS', 'West', 'California', 'NorthernNewEngland', 'Plains')) %>%
   rename(Week_no = X1) %>%
@@ -184,7 +183,7 @@ avocados %>%
          Week_no = as.factor(abs(Week_no-52))) -> avocados
 
 summary(avocados$region)
-```
+{% endhighlight %}
 
     ##              Albany             Atlanta BaltimoreWashington               Boise 
     ##                 338                 338                 338                 338 
@@ -211,20 +210,20 @@ summary(avocados$region)
     ##    WestTexNewMexico 
     ##                 335
 
-``` r
+{% highlight r %}
 summary(avocados$type)
-```
+{% endhighlight %}
 
     ## conventional      organic 
     ##         7605         7602
 
 Looks like we are missing some data for WestTexNewMexico…
 
-``` r
+{% highlight r %}
 avocados %>%
   group_by(Date, type) %>%
   summarize(Region_Ct = length(unique(region))) %>% summary()
-```
+{% endhighlight %}
 
     ##       Date                      type       Region_Ct    
     ##  Min.   :2015-01-04   conventional:169   Min.   :44.00  
@@ -239,13 +238,13 @@ The Region\_Ct confirms the missing data.
 From WestTexNewMexio we are missing 3 index values of their organic
 ’cados. Looking at this missing data more closely:
 
-``` r
+{% highlight r %}
 avocados %>% 
   filter(type == 'organic' & region == 'WestTexNewMexico') %>%
   pull(Date) %>%
   sort() -> test_issue
 (test_issue2 <- difference(test_issue))
-```
+{% endhighlight %}
 
     ## Time differences in days
     ##   [1] NA  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7
@@ -256,19 +255,19 @@ avocados %>%
     ## [126]  7  7 21  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7
     ## [151]  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7
 
-``` r
+{% highlight r %}
 test_issue[which(test_issue2 > 7)]
-```
+{% endhighlight %}
 
     ## [1] "2015-12-13" "2017-07-02"
 
-``` r
+{% highlight r %}
 avocados %>% 
   filter(type == 'organic' & region == 'WestTexNewMexico') %>%
   arrange(Date) %>%
   slice(c(which(test_issue2 > 7)-1,which(test_issue2 > 7),which(test_issue2 > 7)+1)) %>%
   arrange(Date)
-```
+{% endhighlight %}
 
     ## # A tibble: 6 x 14
     ##   Week_no Date       AveragePrice `Total Volume` `4046` `4225` `4770`
@@ -288,17 +287,17 @@ Mexcico. We can handle it by filling in the mean of the surrounding
 values. We will not do that here. Based on the number of regions we
 have, I’m inclined to simply drop WestTextNewMexico.
 
-``` r
+{% highlight r %}
 avocados %>%
   filter(!region %in% c('WestTexNewMexico')) -> avocados
-```
+{% endhighlight %}
 
 # Visualizing data
 ---
 
 Let’s start by visulizing Average Price
 
-``` r
+{% highlight r %}
 avocados %>%
   ggplot() +
   geom_density(aes(x = AveragePrice), fill = 'grey', alpha = 0.5) +
@@ -307,14 +306,14 @@ avocados %>%
        y = 'Density') +
   scale_x_continuous(labels = scales::dollar_format(), 
                      breaks = scales::pretty_breaks(n = 12))
-```
+{% endhighlight %}
 
 ![density-plot1](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-8-1.png){:class="img-responsive"}
 
 We see a right skewed bell shaped distribution that might be bimodal.
 Maybe it is best to look at one slice of time.
 
-``` r
+{% highlight r %}
 avocados %>%
   filter(Week_no == 18 & year == 2017) %>% # time chosen arbitrarily
   ggplot() +
@@ -324,14 +323,14 @@ avocados %>%
        y = 'Density') +
   scale_x_continuous(labels = scales::dollar_format(), 
                      breaks = scales::pretty_breaks(n = 12))
-```
+{% endhighlight %}
 
 ![density-plot22](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 Our two humps are still there. This might be due to the type of Avocado.
 Organic vs. Conventional.
 
-``` r
+{% highlight r %}
 avocados %>%
   filter(Week_no == 18 & year == 2017) %>%
   ggplot() +
@@ -342,7 +341,7 @@ avocados %>%
        y = 'Density') +
   scale_x_continuous(labels = scales::dollar_format(), 
                      breaks = scales::pretty_breaks(n = 12))
-```
+{% endhighlight %}
 
 ![density-plot3](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-10-1.png){:class="img-responsive"}
 
@@ -355,7 +354,7 @@ So our Average price is not exactly what you would say “Normally
 Distributed” across regions for a given slice of time. What does the
 price look like across time for a fixed region?
 
-``` r
+{% highlight r %}
 avocados %>%
   filter(region == 'RaleighGreensboro') %>%
   ggplot() +
@@ -366,7 +365,7 @@ avocados %>%
        y = 'Density') +
   scale_x_continuous(labels = scales::dollar_format(), 
                      breaks = scales::pretty_breaks(n = 12))
-```
+{% endhighlight %}
 
 ![density-plot4](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-11-1.png){:class="img-responsive"}
 
@@ -374,7 +373,7 @@ As we narrow our focus we see the resolution of our dataset sharpen.
 Organic and conventional avocados have a nice bell shape to them. Is
 this the case for all regions?
 
-``` r
+{% highlight r %}
 set.seed(31)
 avocados %>%
   filter(region %in% sample(avocados$region, 5)) %>%
@@ -387,7 +386,7 @@ avocados %>%
   scale_x_continuous(labels = scales::dollar_format(), 
                      breaks = scales::pretty_breaks(n = 12)) +
   facet_grid(region ~ .)
-```
+{% endhighlight %}
 
 ![density-plot](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-12-1.png){:class="img-responsive"}
 
@@ -398,7 +397,7 @@ data set.
 
 We start by considering the the average avocado price from 2015 - 2018.
 
-``` r
+{% highlight r %}
 avocados %>%
   group_by(Date, type) %>%
   summarise(MeanPrice = mean(AveragePrice)) %>%
@@ -412,7 +411,7 @@ avocados %>%
        x = "", y = "Average Price",
        caption = 'Source: Kaggle neuromusic/avocado-prices') +
   theme(axis.text.x = element_text(angle = 290, hjust = 0, vjust = 0))
-```
+{% endhighlight %}
 
 ![time-series1](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-13-1.png){:class="img-responsive"}
 
@@ -432,7 +431,7 @@ facetting. I like the way the labels and titles are preserved for each
 plot. With that said, I still find uses for facetting, as will be seen
 below.
 
-``` r
+{% highlight r %}
 plottr <- function(year, sel_type = c('top', 'bottom', 'random')) {
   
           avocados %>%
@@ -482,7 +481,7 @@ plottr <- function(year, sel_type = c('top', 'bottom', 'random')) {
 
 
 plottr(2017, 'top') / plottr(2017, 'bottom') / plottr(2017, 'random')
-```
+{% endhighlight %}
 
 ![stitched-line-plot](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-14-1.png){:class="img-responsive"}
 
