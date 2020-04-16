@@ -4,7 +4,7 @@ title: Avocados Dashboard Backend Analysis
 ---
 
 Introduction
-============
+---
 
 Holly is a Regional Manager of a coffee shop chain is looking to bring
 avocados on the menu. They’re trendy, expensive, and ripe for a short
@@ -19,7 +19,7 @@ we want to know the cost of the avocados specifically.
 -   Packages used in this post: Tidyverse
 
 Big Picture Objective
-=====================
+---
 
 -   Predict the retail cost of avocados for regions of interest
 -   Develop a price model to profit off the Avocado
@@ -31,7 +31,7 @@ In this post we cover:
 -   Visualizing the Data
 
 Exploratory Data Analysis
-=========================
+---
 
 To start, here is an excert from the data source.
 
@@ -294,7 +294,7 @@ avocados %>%
 ```
 
 Visualizing data
-================
+---
 
 Let’s start by visulizing Average Price
 
