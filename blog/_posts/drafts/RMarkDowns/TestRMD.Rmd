@@ -1,0 +1,78 @@
+---
+title: "Test RMarkdown"
+subtitle: "Testing a Markdown Document Rendered from RStudio using Knitr"
+layout: post
+tags: [R, RStudio, Knitr, RMD]
+---
+
+# Header!
+
+The [test markdown] posted earlier seems to have work fine. The current issues remaining are asthestic, and would not have any affect on an actual post. In light of this success, it is time to turn my attention to building a workflow that starts with RStudio. I believe I'll need to tweak and tune the Knitr parameters to get what I want. I've also seen other rbloggers use custom scripts to Knit their post. 
+
+[test markdown]: https://9olive.github.io/blog/2020/04/17/Test.html
+
+# Example Coding
+
+In the first markdown post, the code I post was executed independently of the post and the image was manually saved in a reference directory. The convenience of rendering straight from an [RMD document] lies within how code outputs are handled. Suppose you have 20 outputs from a single document. Would one need to manually execute each code chunk, save the output to reference directory, and then edit the markdown to include said reference? What if the output is just text, then would you need to edit the text such that it has the appearance of a coding output? Needless to say, the RMarkdown process aims to streamline this process.
+
+[RMD document]: https://rmarkdown.rstudio.com/articles_intro.html
+
+## Header 2!
+### Header 3, for fun...
+
+#### Okay some code now:
+
+First, let's take a look at a code block that should not produce an output.
+
+```{r message=FALSE, warning=FALSE}
+library(faraway) 
+library(tidyverse)
+library(patchwork)
+library(MASS)
+library(knitr)
+theme_set(theme_bw())
+```
+
+Look, no output. Normally R will warn the user of package conflicts, or confirm that a library is activated plus any default verbose messaging the package has.
+
+Below we do a little linear modeling. The work below is looking a Salmonella dataset. 
+
+> The data was collected in a salmonella reverse mutagenicity assay where the numbers of revertant colonies of TA98 Salmonella observed on each of three replicate plates for different doses of quinoline.
+
+Below we fit two models. One that treats dosage of quinoline as a continuous variable, and another that treats it as a discrete factor level. The fit of each model is compared via ANOVA and then visualized. 
+
+```{r}
+data("salmonella")
+
+# Fitting first model. Transforming Dose.
+summary(salmonella.lm <- lm(colonies ~ log(dose + 1), salmonella))
+
+fit1 <- ggplot() +
+  geom_point(aes(x = salmonella.lm$model[,2], y = salmonella.lm$model[,1])) +
+  geom_line(aes(x = salmonella.lm$model[,2], y = salmonella.lm$fitted.values)) +
+  labs(title = 'Salmonella Fit', subtitle = c(salmonella.lm$call),
+       x = 'Quinoline Dose (Transformed)', y = '# of Colonies') +
+  theme(text = element_text(size = 14))
+
+# Fitting a second model for comparison, treating Dose as factor, and still transforming it.
+summary(salmonella.lm2 <- lm(colonies ~ as.factor(round(log(dose + 1), 4)), salmonella)) 
+
+fit2 <- ggplot() +
+  geom_point(aes(x = salmonella.lm2$model[,2], y = salmonella.lm2$model[,1])) +
+  geom_point(aes(x = salmonella.lm2$model[,2], y = salmonella.lm2$fitted.values), col = 'red', shape = 3, size = 3) +
+  labs(title = 'Salmonella Fit, Dose Treated as Factor', subtitle = c(salmonella.lm2$call),
+       x = 'Quinoline Dose (Transformed)', y = '# of Colonies') +
+  theme(text = element_text(size = 14))
+
+# F-Test between the two models
+anova(salmonella.lm, salmonella.lm2)
+```
+
+I print the visual fit below. 
+
+```{r fig.width = 16, fig.height = 9}
+# Patchwork nomenclature
+fit1 | fit2
+```
+
+We see that the factorized model has a better fit for each dosage level. The red pluses are simply the average for each level. Well that's all for this post. 
