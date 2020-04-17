@@ -297,7 +297,7 @@ avocados %>%
 
 Let’s start by visulizing Average Price
 
-{% highlight r %}
+~~~ r
 avocados %>%
   ggplot() +
   geom_density(aes(x = AveragePrice), fill = 'grey', alpha = 0.5) +
@@ -306,9 +306,9 @@ avocados %>%
        y = 'Density') +
   scale_x_continuous(labels = scales::dollar_format(), 
                      breaks = scales::pretty_breaks(n = 12))
-{% endhighlight %}
+~~~
 
-![density-plot1](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-8-1.png){:class="img-responsive"}
+![density-plot1](/_posts/2020-04-14-Analyzing Avocado Prices Part 1 MD_Test/figure-markdown_github/unnamed-chunk-8-1.png){:class="img-responsive"}
 
 We see a right skewed bell shaped distribution that might be bimodal.
 Maybe it is best to look at one slice of time.
@@ -325,7 +325,7 @@ avocados %>%
                      breaks = scales::pretty_breaks(n = 12))
 {% endhighlight %}
 
-![density-plot22](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![density-plot22](/_posts/2020-04-14-Analyzing Avocado Prices Part 1 MD_Test/figure-markdown_github/unnamed-chunk-9-1.png)
 
 Our two humps are still there. This might be due to the type of Avocado.
 Organic vs. Conventional.
@@ -343,7 +343,7 @@ avocados %>%
                      breaks = scales::pretty_breaks(n = 12))
 {% endhighlight %}
 
-![density-plot3](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-10-1.png){:class="img-responsive"}
+![density-plot3](/_posts/2020-04-14-Analyzing Avocado Prices Part 1 MD_Test/figure-markdown_github/unnamed-chunk-10-1.png){:class="img-responsive"}
 
 Well, kind of… The Conventional Avocados look to have a bimodal
 distribution, while the organic ’cados are centered around a $1.70.
@@ -367,7 +367,7 @@ avocados %>%
                      breaks = scales::pretty_breaks(n = 12))
 {% endhighlight %}
 
-![density-plot4](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-11-1.png){:class="img-responsive"}
+![density-plot4](/_posts/2020-04-14-Analyzing Avocado Prices Part 1 MD_Test/figure-markdown_github/unnamed-chunk-11-1.png){:class="img-responsive"}
 
 As we narrow our focus we see the resolution of our dataset sharpen.
 Organic and conventional avocados have a nice bell shape to them. Is
@@ -388,7 +388,7 @@ avocados %>%
   facet_grid(region ~ .)
 {% endhighlight %}
 
-![density-plot](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-12-1.png){:class="img-responsive"}
+![density-plot](/_posts/2020-04-14-Analyzing Avocado Prices Part 1 MD_Test/figure-markdown_github/unnamed-chunk-12-1.png){:class="img-responsive"}
 
 Oh no, having a nice bell shaped distribution is certaintly not
 ubiquitous across all regions. The thing is, we are considering data the
@@ -413,7 +413,7 @@ avocados %>%
   theme(axis.text.x = element_text(angle = 290, hjust = 0, vjust = 0))
 {% endhighlight %}
 
-![time-series1](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-13-1.png){:class="img-responsive"}
+![time-series1](/_posts/2020-04-14-Analyzing Avocado Prices Part 1 MD_Test/figure-markdown_github/unnamed-chunk-13-1.png){:class="img-responsive"}
 
 There are not any obvious trends to be observed from the time series.
 The volitility in avocado prices seems to have peaked in October 2017.
@@ -483,7 +483,7 @@ plottr <- function(year, sel_type = c('top', 'bottom', 'random')) {
 plottr(2017, 'top') / plottr(2017, 'bottom') / plottr(2017, 'random')
 {% endhighlight %}
 
-![stitched-line-plot](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-14-1.png){:class="img-responsive"}
+![stitched-line-plot](/_posts/2020-04-14-Analyzing Avocado Prices Part 1 MD_Test/figure-markdown_github/unnamed-chunk-14-1.png){:class="img-responsive"}
 
 Overall, we still don’t observe a cyclical of distinct trend in with
 prices. The volatility in prices seems present across all regions.
@@ -495,7 +495,7 @@ the chunk above. I will spare the code. I’ve kept the selection criteria
 the same, so again the most expensive, least expensive and two random
 regions. I also made some formatting changes.
 
-![stitched-line-plot2](/_posts/avocados_files/figure-markdown_github/unnamed-chunk-15-1.png){:class="img-responsive"}
+![stitched-line-plot2](/_posts/2020-04-14-Analyzing Avocado Prices Part 1 MD_Test/figure-markdown_github/unnamed-chunk-15-1.png){:class="img-responsive"}
 
 Looks like we have a bit more seasonality when it comes to weekly
 output.
