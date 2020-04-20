@@ -1,0 +1,360 @@
+---
+title: "Avocados"
+output: 
+  md_document:
+    variant: markdown_github
+---
+
+```{r Libraries, include=F}
+library(tidyverse)
+library(rvest)
+library(patchwork)
+library(feasts)
+library(fable)
+library(tsibble)
+library(e1071)
+library(plotly)
+theme_set(theme_light())
+```
+
+# Introduction
+
+Avocados. They are a hearty, savory and delicious snack. In the recent decade, avocados have trended harder than alternative dairy and meat products, and yet, the humble fruit does not aim to change the world. In multi-part post, I dive in to the pit of the avocado boom during in the last half of the 2010s. I explore a dataset, modeling techniques, and R dashboarding summarizations. 
+
+These posts are intended for the data analyst or data scientist who use R. The final dashboard is intended for a broad audience, but should be read with the same mindset a cafe manager would have. More on that in a later post.
+
+# Exploratory Data Analysis
+
+  * Methods for summarizing our dataset
+  * Methods for visualizing our dataset
+
+```{r Load data, echo = F}
+a_file <- 'C:/Users/JDOli/Documents/Projects/Computer Science Projects/Data Scientist Portfolio/Datasets/avocado.csv'
+```
+
+```{r, include = F}
+avocados <- read_csv(a_file)
+```
+
+We start the project by pulling a user-compile dataset from Kaggle, and credit is due to [Justin Kiggins](https://www.kaggle.com/neuromusic). Below is a summary from the dataset [source page]https://www.kaggle.com/neuromusic.
+
+  > The table below represents weekly 2018 retail scan data for National retail volume (units) and price. Retail scan data comes directly from retailers’ cash registers based on actual retail sales of Hass avocados. Starting in 2013, the table below reflects an expanded, multi-outlet retail data set. Multi-outlet reporting includes an aggregation of the following channels: grocery, mass, club, drug, dollar and military. The Average Price (of avocados) in the table reflects a per unit (per avocado) cost, even when multiple units (avocados) are sold in bags. The Product Lookup codes (PLU’s) in the table are only for Hass avocados. Other varieties of avocados (e.g. greenskins) are not included in this table.
+  
+We start by viewing a summary of our dataset, type of avocados, and the regions. The `summary()` function is useful for this. 
+
+```{r}
+avocados %>% summary()
+unique(avocados$type)
+unique(avocados$region)
+```
+
+From the summary, we notice a couple of things.
+  
+  * X1 are weeks of the year, enumerated in reverse. 
+  * Date was read in properly. 
+  * The average price of an avocado never is between 44 cents and $3.25.
+  * At one point, 63 million avocados were sold from one region in a single week!
+  * Type and Region should be formatted to factors. 
+  * Regions are Cities, States, and US Regions. Let's remove US Regions and states, as it double counts some cities. 
+    * We need to instiage NewYork region. Is it the state or the city? No information regarding this was available from the data source.
+
+I will compare New York to Los Angeles and California. 
+
+```{r}
+avocados %>%
+  
+  # Regions to compare
+  filter(region %in% c('NewYork', 'LosAngeles', 'California')) %>%
+  group_by(type, region) %>%
+  
+  # Criteria to compare
+  summarise(AvgVol = mean(`Total Volume`),
+            MedVol = median(`Total Volume`),
+            AvgBag = mean(`Total Bags`),
+            MedBag = median(`Total Bags`)) %>%
+  ungroup() %>%
+  
+  # Don't want to shuffle types
+  group_by(type) %>%
+  
+  # For legibility
+  arrange(desc(AvgVol)) %>%
+  
+  # For legibility
+  mutate_if(is.numeric, function(x) {scales::dollar(x, accuracy = 1e4)})
+```
+
+From the table above, it's easy to see that NewYork refers to the city and not the state. I will keep NewYork.
+
+```{r}
+avocados %>%
+  filter(!region %in% c('Midsouth', 'Northeast', 'SouthCentral', 'Southeast', 'TotalUS', 'West', 'California', 'NorthernNewEngland', 'Plains')) %>%
+  rename(Week_no = X1) %>%
+  
+  mutate(type    = as.factor(type),
+         region  = as.factor(region),
+         
+         # Turning re-reversing order of the week indices. Just my preference.
+         Week_no = as.factor(abs(Week_no-52))) -> avocados
+
+summary(avocados$region)
+summary(avocados$type)
+```
+
+Looks like we are missing some data for WestTexNewMexico... 
+
+```{r}
+avocados %>%
+  group_by(Date, type) %>%
+  summarize(Region_Ct = length(unique(region))) %>% summary()
+```
+
+The Region_Ct confirms the missing data.
+
+From WestTexNewMexio we are missing 3 index values of their organic 'cados. Looking at this missing data more closely:
+
+```{r}
+avocados %>% 
+  filter(type == 'organic' & region == 'WestTexNewMexico') %>%
+  pull(Date) %>%
+  sort() -> test_issue
+(test_issue2 <- difference(test_issue))
+test_issue[which(test_issue2 > 7)]
+avocados %>% 
+  filter(type == 'organic' & region == 'WestTexNewMexico') %>%
+  arrange(Date) %>%
+  slice(c(which(test_issue2 > 7)-1,which(test_issue2 > 7),which(test_issue2 > 7)+1)) %>%
+  arrange(Date)
+  
+```
+
+The missing data is not a big deal. We are missing a week of data in December 2015 and two weeks of data in June 2017 for West Texas + New Mexcico. We can handle it by filling in the mean of the surrounding values. We will not do that here. Based on the number of regions we have, I'm inclined to simply drop WestTextNewMexico.
+
+```{r}
+avocados %>%
+  filter(!region %in% c('WestTexNewMexico')) -> avocados
+```
+
+
+# Visualizing data
+
+Let's start by visulizing Average Price
+
+```{r}
+avocados %>%
+  ggplot() +
+  geom_density(aes(x = AveragePrice), fill = 'grey', alpha = 0.5) +
+  labs(title = 'Distribution of Average Price',
+       x = 'Average Price',
+       y = 'Density') +
+  scale_x_continuous(labels = scales::dollar_format(), 
+                     breaks = scales::pretty_breaks(n = 12)) -> gg
+
+```
+
+We see a right skewed bell shaped distribution that might be bimodal. Maybe it is best to look at one slice of time. 
+
+```{r}
+avocados %>%
+  filter(Week_no == 18 & year == 2017) %>% # time chosen arbitrarily
+  ggplot() +
+  geom_density(aes(x = AveragePrice), fill = 'grey', alpha = 0.5) +
+  labs(title = 'Distribution of Average Price',
+       x = 'Average Price',
+       y = 'Density') +
+  scale_x_continuous(labels = scales::dollar_format(), 
+                     breaks = scales::pretty_breaks(n = 12))
+```
+
+Our two humps are still there. This might be due to the type of Avocado. Organic vs. Conventional.
+
+```{r}
+avocados %>%
+  filter(Week_no == 18 & year == 2017) %>%
+  ggplot() +
+  geom_density(aes(x = AveragePrice, fill = type), alpha = 0.5) +
+  labs(title = 'Distribution of Average Price - Fixed Time',
+       subtitle = 'By Type',
+       x = 'Average Price',
+       y = 'Density') +
+  scale_x_continuous(labels = scales::dollar_format(), 
+                     breaks = scales::pretty_breaks(n = 12))
+```
+
+Well, kind of... The Conventional Avocados look to have a bimodal distribution, while the organic 'cados are centered around a $1.70. Though, the organic 'cados have a fat tail, and it seems that a small hump is emerging from it.
+
+So our Average price is not exactly what you would say "Normally Distributed" across regions for a given slice of time. What does the price look like across time for a fixed region?
+
+```{r}
+avocados %>%
+  filter(region == 'RaleighGreensboro') %>%
+  ggplot() +
+  geom_density(aes(x = AveragePrice, fill = type), alpha = 0.5) +
+  labs(title = 'Distribution of Average Price - Fixed Region',
+       subtitle = 'By Type',
+       x = 'Average Price',
+       y = 'Density') +
+  scale_x_continuous(labels = scales::dollar_format(), 
+                     breaks = scales::pretty_breaks(n = 12))
+```
+
+As we narrow our focus we see the resolution of our dataset sharpen. Organic and conventional avocados have a nice bell shape to them. Is this the case for all regions?
+
+```{r}
+set.seed(31)
+avocados %>%
+  filter(region %in% sample(avocados$region, 5)) %>%
+  ggplot() +
+  geom_density(aes(x = AveragePrice, fill = type), alpha = 0.5) +
+  labs(title = 'Distribution of Average Price - Fixed Region',
+       subtitle = 'By Type',
+       x = 'Average Price',
+       y = 'Density') +
+  scale_x_continuous(labels = scales::dollar_format(), 
+                     breaks = scales::pretty_breaks(n = 12)) +
+  facet_grid(region ~ .)
+```
+
+Oh no, having a nice bell shaped distribution is certaintly not ubiquitous across all regions. The thing is, we are considering data the takes place over time. Let's explore how the price has evolved over the data set.
+
+We start by considering the the average avocado price from 2015 - 2018. 
+
+```{r}
+avocados %>%
+  group_by(Date, type) %>%
+  summarise(MeanPrice = mean(AveragePrice)) %>%
+  ggplot() +
+  geom_line(aes(x = Date, y = MeanPrice, color = type), size = 1) +
+  scale_y_continuous(labels = scales::dollar_format(), 
+                     breaks = scales::pretty_breaks(n = 7)) +
+  scale_x_date(breaks = scales::pretty_breaks(n = 14)) +
+  labs(title = "Ecological Average Avocado Price Over Time",
+       subtitle = "United States, 2015 - 2018",
+       x = "", y = "Average Price",
+       caption = 'Source: Kaggle neuromusic/avocado-prices') +
+  theme(axis.text.x = element_text(angle = 290, hjust = 0, vjust = 0))
+```
+
+There are not any obvious trends to be observed from the time series. The volitility in avocado prices seems to have peaked in October 2017.
+
+I suspect it will be more useful to investigate particular regions. We can't look at all regions simultaneously, so we'll considered three segments. 
+
+  1. Regions with the most expensive avocado during a certain time
+  2. Regions with the least expensive avocado during a certain time
+  3. Randomly selected regions
+
+Below I use patchwork to stitch the plots together as oppose to facetting. I like the way the labels and titles are preserved for each plot. With that said, I still find uses for facetting, as will be seen below.
+
+```{r fig.height=36, fig.width=24}
+plottr <- function(year, sel_type = c('top', 'bottom', 'random')) {
+  
+          avocados %>%
+            filter(year == year) %>%
+            group_by(region) %>%
+            summarise(MeanPrice = mean(AveragePrice)) %>%
+            ungroup() -> cado
+  
+          rgns_hi <- cado %>% top_n( 2, MeanPrice) %>% pull(region)
+          rgns_lo <- cado %>% top_n(-2, MeanPrice) %>% pull(region)
+         
+          if (sel_type == 'top'){
+            
+            rgns <- rgns_hi
+            plt_title <- 'Most Expensive Avocados'
+            
+          } else if (sel_type =='bottom') {
+            
+            rgns <- rgns_lo
+            plt_title <- 'Least Expensive Avocados'
+            
+          } else {
+            
+            rgns <- cado %>% filter(!region %in% c(rgns_hi, rgns_lo)) %>%
+              pull(region) %>% unique() %>% sample(2)  
+            plt_title <- 'Randomly Selected Regions'  
+            
+          }
+          
+          avocados %>%
+            filter(region %in% rgns) %>%
+            ggplot() +
+            geom_line(aes(x = Date, y = AveragePrice, 
+                          color = type, linetype = region), 
+                      size = 1.5, alpha = .7) +
+            scale_y_continuous(labels = scales::dollar_format(), 
+                               breaks = scales::pretty_breaks(n = 7)) +
+            scale_x_date(breaks = scales::pretty_breaks(n = 25)) +
+            labs(title = plt_title,
+                 x = "", y = "Average Price") +
+            theme(axis.text.x = element_text(angle = 290, hjust = 0, vjust = 0, size = 18),
+                  text = element_text(size = 24)) -> gg
+          
+          return(gg)
+            
+}
+
+
+plottr(2017, 'top') / plottr(2017, 'bottom') / plottr(2017, 'random')
+```
+
+Overall, we still don't observe a cyclical of distinct trend in with prices. The volatility in prices seems present across all regions. What's interesting is that the least expensive regions seem to spike in price towards the end of the 2017 bubble. 
+
+Lastly, I'll look at the weekly volume data using the same framework as the chunk above. I will spare the code. I've kept the selection criteria the same, so again the most expensive, least expensive and two random regions. I also made some formatting changes.
+
+```{r echo=FALSE, fig.height=36, fig.width=24}
+plottr2 <- function(year, sel_type = c('top', 'bottom', 'random')) {
+  
+          avocados %>%
+            filter(year == year) %>%
+            group_by(region) %>%
+            summarise(MeanPrice = mean(AveragePrice)) %>%
+            ungroup() -> cado
+  
+          rgns_hi <- cado %>% top_n( 2, MeanPrice) %>% pull(region)
+          rgns_lo <- cado %>% top_n(-2, MeanPrice) %>% pull(region)
+         
+          if (sel_type == 'top'){
+            
+            rgns <- rgns_hi
+            plt_title <- 'Most Expensive Avocados'
+            
+          } else if (sel_type =='bottom') {
+            
+            rgns <- rgns_lo
+            plt_title <- 'Least Expensive Avocados'
+            
+          } else {
+            
+            rgns <- cado %>% filter(!region %in% c(rgns_hi, rgns_lo)) %>%
+              pull(region) %>% unique() %>% sample(2)  
+            plt_title <- 'Randomly Selected Regions'  
+            
+          }
+          
+          avocados %>%
+            filter(region %in% rgns) %>%
+            ggplot() +
+            geom_line(aes(x = Date, y = `Total Volume`, 
+                          color = type, linetype = region), 
+                      size = 1.5, alpha = .7) +
+            scale_y_continuous(labels = scales::number_format(big.mark = ','),                                breaks = scales::pretty_breaks(n = 7)) +
+            scale_x_date(breaks = scales::pretty_breaks(n = 25)) +
+            labs(title = plt_title,
+                 x = "", y = "Average Price") +
+            theme(axis.text.x = element_text(angle = 290, hjust = 0, vjust = 0, size = 18),
+                  text = element_text(size = 24)) +
+            facet_grid(type~., scales = 'free_y')-> gg
+          
+          return(gg)
+            
+}
+
+
+plottr2(2017, 'top') / plottr2(2017, 'bottom') / plottr2(2017, 'random')
+```
+
+Looks like we have a bit more seasonality when it comes to weekly output.
+
+In my next post, I will be looking at modeling this data. We will explore various methods, model diagnostics and such.
+
+
