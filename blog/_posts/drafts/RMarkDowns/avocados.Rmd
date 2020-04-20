@@ -19,12 +19,12 @@ library(fable)
 library(tsibble)
 library(e1071)
 library(plotly)
-theme_set(theme_light())
+theme_set(theme_light() + theme(text = element_text(size = 18)))
 ```
 
 # Introduction
 
-Avocados. They are a hearty, savory and a delicious snack. In the recent decade, avocados have trended harder than alternative dairy and meat products, and yet, the humble fruit does not aim to change the world. In this multi-part post, I dive in to the pit of the avocado boom during in the last half of the 2010s. I explore a dataset, modeling techniques, and R dashboarding summarizations. 
+Avocados. They are a hearty, savory and a delicious snack. In the recent decade, avocados have trended harder than any alternative dairy and meat products, and yet, the humble fruit does not aim to change the world. In this multi-part post, I dive in to the pit of the avocado boom during the last half of the 2010s. I explore a dataset, modeling techniques, and R dashboarding to summarize and present 
 
 These posts are intended for the data analysts or data scientists who use R. The final dashboard is intended for a broader audience.
 
@@ -41,7 +41,7 @@ a_file <- 'C:/Users/JDOli/Documents/Projects/Computer Science Projects/Data Scie
 avocados <- read_csv(a_file)
 ```
 
-We start the project by pulling a user-compile dataset from Kaggle, and credit is due to [Justin Kiggins](https://www.kaggle.com/neuromusic). Below is a summary from the dataset [source page](https://www.kaggle.com/neuromusic). Follow the if you would like to view the dataset referenced in the following excerpt.
+We start the project by pulling a user-compile dataset from Kaggle, and credit is due to [Justin Kiggins](https://www.kaggle.com/neuromusic). Below is a summary from the dataset [source page](https://www.kaggle.com/neuromusic). Follow the link if you would like to view the table referenced in the following excerpt.
 
   > The table below represents weekly 2018 retail scan data for National retail volume (units) and price. Retail scan data comes directly from retailers’ cash registers based on actual retail sales of Hass avocados. Starting in 2013, the table below reflects an expanded, multi-outlet retail data set. Multi-outlet reporting includes an aggregation of the following channels: grocery, mass, club, drug, dollar and military. The Average Price (of avocados) in the table reflects a per unit (per avocado) cost, even when multiple units (avocados) are sold in bags. The Product Lookup codes (PLU’s) in the table are only for Hass avocados. Other varieties of avocados (e.g. greenskins) are not included in this table.
   
@@ -57,14 +57,13 @@ From the summary, we notice a couple of things.
   
   * X1 are weeks of the year, enumerated in reverse. 
   * Date was read in properly. 
-  * The average price of an avocado never is between 44 cents and $3.25.
+  * The average price of an avocado never is between \$0.44 cents and \$3.25.
   * At one point, 63 million avocados were sold from one region in a single week!
   * Type and Region should be formatted to factors. 
   * Regions are Cities, States, and US Regions. Let's remove US Regions and states, as it double counts some cities. 
-    * We need to instiage NewYork region. Is it the state or the city? No information regarding this was available from the data source.
+    * We need to investigate the *NewYork* region. Is it the state or the city? No information regarding this was available from the data source.
 
-I will compare New York to Los Angeles and California. 
-
+I will compare the volume of avocados sold in New York to that in the Los Angeles and California regions. 
 ```{r}
 avocados %>%
   
@@ -89,7 +88,7 @@ avocados %>%
   mutate_if(is.numeric, function(x) {scales::dollar(x, accuracy = 1e4)})
 ```
 
-From the table above, it's easy to see that NewYork refers to the city and not the state. I will keep NewYork.
+From the table above, it's easy to see that *NewYork* refers to the city and not the state. Since I am keeping city regions, we'll hold on to New York's data.
 
 ```{r}
 avocados %>%
@@ -101,20 +100,22 @@ avocados %>%
          
          # Turning re-reversing order of the week indices. Just my preference.
          Week_no = as.factor(abs(Week_no-52))) -> avocados
-
-summary(avocados$region)
-summary(avocados$type)
 ```
 
-Looks like we are missing some data for WestTexNewMexico... 
+Alright, now the the dataset just includes states. Let's take another look the regions by using our `summary()` function.
 
 ```{r}
-avocados %>%
-  group_by(Date, type) %>%
-  summarize(Region_Ct = length(unique(region))) %>% summary()
+summary(avocados$region)
 ```
 
-The Region_Ct confirms the missing data.
+It looks like WestTexNewMexico is missing data. We look a summary of *type* for WestTextNewMexico.
+
+```{r}
+avocados %>% 
+  filter(region == 'WestTexNewMexico') %>% 
+  pull(region) %>% 
+  summary()
+```
 
 From WestTexNewMexio we are missing 3 index values of their organic 'cados. Looking at this missing data more closely:
 
@@ -133,7 +134,7 @@ avocados %>%
   
 ```
 
-The missing data is not a big deal. We are missing a week of data in December 2015 and two weeks of data in June 2017 for West Texas + New Mexcico. We can handle it by filling in the mean of the surrounding values. We will not do that here. Based on the number of regions we have, I'm inclined to simply drop WestTextNewMexico.
+The missing data is not a big deal. We are missing a week of data in December 2015 and two weeks of data in June 2017 for West Texas + New Mexcico. We can handle it by filling in the mean of the surrounding values. We will not do that here. Based on the number of regions we have, I'm inclined to simply drop WestTextNewMexico for visulization purposes. In the modeling post, we will look at filling it in.
 
 ```{r}
 avocados %>%
@@ -143,7 +144,9 @@ avocados %>%
 
 # Visualizing data
 
-Let's start by visulizing Average Price
+In this section, I layout my thought process for generating a visualization in a sort of Tidy Tuesday fashion. 
+
+Let's start by visulizing Average Price.
 
 ```{r}
 avocados %>%
@@ -153,7 +156,7 @@ avocados %>%
        x = 'Average Price',
        y = 'Density') +
   scale_x_continuous(labels = scales::dollar_format(), 
-                     breaks = scales::pretty_breaks(n = 12)) -> gg
+                     breaks = scales::pretty_breaks(n = 12))
 
 ```
 
@@ -290,7 +293,7 @@ plottr <- function(year, sel_type = c('top', 'bottom', 'random')) {
                                breaks = scales::pretty_breaks(n = 7)) +
             scale_x_date(breaks = scales::pretty_breaks(n = 25)) +
             labs(title = plt_title,
-                 x = "", y = "Average Price") +
+                 x = "", y = "Weekly Volume") +
             theme(axis.text.x = element_text(angle = 290, hjust = 0, vjust = 0, size = 18),
                   text = element_text(size = 24)) -> gg
           
@@ -321,18 +324,21 @@ plottr2 <- function(year, sel_type = c('top', 'bottom', 'random')) {
           if (sel_type == 'top'){
             
             rgns <- rgns_hi
-            plt_title <- 'Most Expensive Avocados'
+            plt_title <- 'Weekly Volume of Avocados'
+            sub_title <- 'Regions Sorted by Most Expensive Avocados'
             
           } else if (sel_type =='bottom') {
             
             rgns <- rgns_lo
-            plt_title <- 'Least Expensive Avocados'
+            plt_title <- 'Weekly Volume of Avocados'
+            sub_title <- 'Regions Sorted by Least Expensive Avocados'
             
           } else {
             
             rgns <- cado %>% filter(!region %in% c(rgns_hi, rgns_lo)) %>%
               pull(region) %>% unique() %>% sample(2)  
-            plt_title <- 'Randomly Selected Regions'  
+            plt_title <- 'Weekly Volume of Avocados'
+            sub_title <- 'Regions Randomly Chosen' 
             
           }
           
@@ -345,7 +351,8 @@ plottr2 <- function(year, sel_type = c('top', 'bottom', 'random')) {
             scale_y_continuous(labels = scales::number_format(big.mark = ','),                                breaks = scales::pretty_breaks(n = 7)) +
             scale_x_date(breaks = scales::pretty_breaks(n = 25)) +
             labs(title = plt_title,
-                 x = "", y = "Average Price") +
+                 subtitle = sub_title,
+                 x = "", y = "Weekly Volume") +
             theme(axis.text.x = element_text(angle = 290, hjust = 0, vjust = 0, size = 18),
                   text = element_text(size = 24)) +
             facet_grid(type~., scales = 'free_y')-> gg
@@ -354,12 +361,11 @@ plottr2 <- function(year, sel_type = c('top', 'bottom', 'random')) {
             
 }
 
-
 plottr2(2017, 'top') / plottr2(2017, 'bottom') / plottr2(2017, 'random')
 ```
 
-Looks like we have a bit more seasonality when it comes to weekly output.
+Looks like we have a bit more seasonality when it comes to weekly volume. This will be something to consider when modeling the data. 
 
-In my next post, I will be looking at modeling this data. We will explore various methods, model diagnostics and such.
+In my next post, I will be looking at modeling this data. 
 
 
