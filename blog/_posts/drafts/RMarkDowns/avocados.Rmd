@@ -1,9 +1,14 @@
 ---
-title: "Avocados"
-output: 
-  md_document:
-    variant: markdown_github
+title: "Avocados for Data Analyst"
+subtitle: "Avocado Intro & EDA"
+layout: post
+bigimg: /blog/addons/2020-04-20-avocados/sliced-avocado-fruit-on-white-surface-3850662.jpg
+tags: [ggplot, RStudio, dplyr, lineplot, Avocados, Analysis, Visualization]
 ---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width = 16, fig.height = 9, include=FALSE, warning=FALSE, message=FALSE)
+```
 
 ```{r Libraries, include=F}
 library(tidyverse)
@@ -19,9 +24,9 @@ theme_set(theme_light())
 
 # Introduction
 
-Avocados. They are a hearty, savory and delicious snack. In the recent decade, avocados have trended harder than alternative dairy and meat products, and yet, the humble fruit does not aim to change the world. In multi-part post, I dive in to the pit of the avocado boom during in the last half of the 2010s. I explore a dataset, modeling techniques, and R dashboarding summarizations. 
+Avocados. They are a hearty, savory and a delicious snack. In the recent decade, avocados have trended harder than alternative dairy and meat products, and yet, the humble fruit does not aim to change the world. In this multi-part post, I dive in to the pit of the avocado boom during in the last half of the 2010s. I explore a dataset, modeling techniques, and R dashboarding summarizations. 
 
-These posts are intended for the data analyst or data scientist who use R. The final dashboard is intended for a broad audience, but should be read with the same mindset a cafe manager would have. More on that in a later post.
+These posts are intended for the data analysts or data scientists who use R. The final dashboard is intended for a broader audience.
 
 # Exploratory Data Analysis
 
@@ -36,7 +41,7 @@ a_file <- 'C:/Users/JDOli/Documents/Projects/Computer Science Projects/Data Scie
 avocados <- read_csv(a_file)
 ```
 
-We start the project by pulling a user-compile dataset from Kaggle, and credit is due to [Justin Kiggins](https://www.kaggle.com/neuromusic). Below is a summary from the dataset [source page]https://www.kaggle.com/neuromusic.
+We start the project by pulling a user-compile dataset from Kaggle, and credit is due to [Justin Kiggins](https://www.kaggle.com/neuromusic). Below is a summary from the dataset [source page](https://www.kaggle.com/neuromusic). Follow the if you would like to view the dataset referenced in the following excerpt.
 
   > The table below represents weekly 2018 retail scan data for National retail volume (units) and price. Retail scan data comes directly from retailers’ cash registers based on actual retail sales of Hass avocados. Starting in 2013, the table below reflects an expanded, multi-outlet retail data set. Multi-outlet reporting includes an aggregation of the following channels: grocery, mass, club, drug, dollar and military. The Average Price (of avocados) in the table reflects a per unit (per avocado) cost, even when multiple units (avocados) are sold in bags. The Product Lookup codes (PLU’s) in the table are only for Hass avocados. Other varieties of avocados (e.g. greenskins) are not included in this table.
   
@@ -200,7 +205,7 @@ avocados %>%
 
 As we narrow our focus we see the resolution of our dataset sharpen. Organic and conventional avocados have a nice bell shape to them. Is this the case for all regions?
 
-```{r}
+```{r fig.height=20, fig.width=16}
 set.seed(31)
 avocados %>%
   filter(region %in% sample(avocados$region, 5)) %>%

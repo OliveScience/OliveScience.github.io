@@ -11,7 +11,7 @@ KnitPost <- function(input, outfile, base.url="/") {
   require(knitr);
   opts_knit$set(base.url = base.url)
   fig.path <- paste0("blog/addons/", Sys.Date(), '-', sub(".Rmd$", "", basename(input)), "/")
-  opts_chunk$set(fig.path = fig.path)
+  opts_chunk$set(fig.path = fig.path, fig.width = 16, fig.height = 9)
   opts_chunk$set(fig.cap = "testing")
   render_jekyll()
   knit(input, outfile, envir = parent.frame())
