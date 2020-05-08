@@ -16,7 +16,7 @@ KnitPost <- function(input, outfile, base.url="/") {
   render_jekyll()
   knit(input, outfile, envir = parent.frame())
 }
-
+ 
 for (infile in list.files("blog/_posts/drafts/RMarkDowns", pattern="*.Rmd", full.names=TRUE)) {
   outfile = paste0("blog/_posts/drafts/Staging/", sub(".Rmd$", ".md", basename(infile)))
   
