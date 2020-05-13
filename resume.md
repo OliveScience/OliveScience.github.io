@@ -12,7 +12,7 @@ I am interested in developing myself into the Lead Data Scientist within your or
 
 - ***R Statistical Software***
     - Tidyverse
-    - Shiny Dashboarding
+    - [Shiny Dashboarding](https://josepholiveira.shinyapps.io/cado_dashboard/)
     - RMarkdown
 - ***Python***
     - NumPy
@@ -44,6 +44,7 @@ I am interested in developing myself into the Lead Data Scientist within your or
 ## Experience
 
 - **Fleet Feet - Junior Data Analyst**  2019 - 2020
+    - Collaborated in team environment to provide analytical support to 180+ stores and national marketing campaigns
     - Analysis lead for the Fleet Feet Rewards Program
     - Monthly and weekly analytical reports for Leadership Team and Vendors
     - Conduct revenue attibution for various marketing projects
