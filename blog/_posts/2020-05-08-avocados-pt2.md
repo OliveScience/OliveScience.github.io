@@ -183,6 +183,6 @@ The Prophet model performs better It's conceivable that that anomalous behavior 
 
 The average avocado prices will be subject to the same uncertainty that any good on the market is. Alas, the risk can be culled through making the data available for anyone. 
 
-Check out the interactive forecase model in action:
+Check out the interactive forecast model in action [here](https://josepholiveira.shinyapps.io/cado_dashboard/).
 
 
