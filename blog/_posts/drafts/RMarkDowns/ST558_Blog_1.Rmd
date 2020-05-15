@@ -1,0 +1,26 @@
+---
+title: "What's Data Science About?"
+layout: post
+subtitle: Writing assignment for ST558 - Data Science for Statisticians 
+tags: [DataScience, Data, Science, NCSU]
+bigimg: null
+---
+
+# Data Science for Statisticians
+## Prompt: 
+
+> What do you think being a data scientist is about?  What do you see as the major duties and/or knowledge areas?  
+What differences/similarities do you see between data scientists and statisticians?  
+How do you view yourself in relation to these two areas?
+
+Data Science - When you boil it down, it's just applied statistics. To apply statistics in the modern day, one needs to have the ability to operate computers at scale and translate domain specific knowledge into program logic. Yet without statistics, data science would be in the state of technology that was defined the mid-90's to early 2000's. Back then, being able to automate a tedious process that may have replaced an admin role was cutting edge. As the roles, or problems, due to be automated presented more complexity with less routine there became a need to siphon data methodically. Statisticians have been diligent stewards of data for centuries, so the merging of statistics with scaled computation to solve domain specific problems was not only natural but required. 
+
+Being a data scientist is about applying a statistical framework using sophisticated computational techniques to solve problems. Their duty is to explain the relationship between relevant factors and the solution to a problem. Some computational techniques prevent the scientist from explicitly understanding these relationships. Therefore a knowledge of computational algorithms and techniques should be within their ability. Most importantly, having specific knowledge about the subject matter one is applying statistical and computational techniques is crucial. Without domain specific intel, one will make a mistake akin to the effecient packing schema below:
+
+image: ![efficient_tennis_ball_packing_balls_cut_in_half_allow_2_extra_balls](~/Blog/9Olive.github.io/img)
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
