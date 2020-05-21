@@ -1,6 +1,6 @@
 ---
 layout: page
-title:  me
+title:  About Me
 subtitle: Scientist, Runner, and Student
 ---
 
