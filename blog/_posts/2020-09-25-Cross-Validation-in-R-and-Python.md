@@ -12,9 +12,9 @@ In this post you will learn what Cross-Validation is, and how to do it in R and 
 
 Cross-Validation is an analytical method for assessing how a modeling technique might generalize to new data gathered separately from the data set used to build the model. The technique can be referred to as CV, rotation estimation, or out-of-sample testing. CV draws upon techniques of random sampling and applies them to model validation within supervised learning task. There are several different methods for implementing Cross-Validation.
 
-  - Leave One Out Cross-Validation: [R](leave-one-out-cv-in-r) and [Python](leave-one-out-cv-in-python)
-  - Leave **p** Out Cross-Validation: [Explanation](leave-p-out-cv)
-  - k-Fold Cross Validation: [R](k-fold-cv-in-r) and [Python](k-fold-cv-in-python)
+  - Leave One Out Cross-Validation: [R](Cross-Validation-in-R-and-Python.html#leave-one-out-cv-in-r) and [Python](Cross-Validation-in-R-and-Python.html#leave-one-out-cv-in-python)
+  - Leave **p** Out Cross-Validation: [Explanation](Cross-Validation-in-R-and-Python.html#leave-p-out-cv)
+  - k-Fold Cross Validation: [R](Cross-Validation-in-R-and-Python.html#k-fold-cv-in-r) and [Python](Cross-Validation-in-R-and-Python.html#k-fold-cv-in-python)
   
 Which is the best method for my task? Well, that depends. Leave p Out Cross-Validation can be computationally expensive, and maybe you can glean the same info from a 80/20 hold out cross validation. Perhaps the modeling task needs to meet strict prediction criteria before being deployed into production, so maybe you'll consider i-Nested k-Fold CV. It will be up to the Data Scientist to determine how they want to validate the performance of their models. Below I show case how each method is implemented in R and Python. Click on the programming language next to any method to skip ahead to that method's implementation. 
 
@@ -126,6 +126,8 @@ print(round(mean(err), 4))
 {% highlight text %}
 ## [1] 0.7609
 {% endhighlight %}
+
+The average root mean square error from each model-validation step is above for the R loop. Since this is an exhaustive deterministic method I should get the same error in the python implementation. 
 
 
 #### Leave One Out CV in Python
