@@ -1,6 +1,6 @@
 ---
 title: "Cross-Validation"
-subtitle: A 'What is it' and 'How to' For Beginner the Data Scientist
+subtitle: A 'What is it' and 'How to' For the Beginner Data Scientist
 layout: post
 bigimg: /blog/addons/2020-09-25-Cross_Validation/cv_banner_img.jpg
 tags: [cross-validation, cross, validation, cv, kfold, vfold, loocv, lpocv, kfoldcv, R, RStudio, reticulate, python, scikitlearn, sklearn, tidymodels, rmse, linear, models, iris, data, science, scientist]
@@ -22,47 +22,72 @@ Which is the best method for my task? Well, that depends. Leave p Out Cross-Vali
 
 In true to tutorial fashion, I will be using the iris data set since most data scientist have access to this popular compilation of data by Ronald Fisher. I will be fitting a linear model. The residual mean square error will be calculated.
 
-```{r set-up, include=FALSE}
-library(reticulate)
-library(tidyverse)
-library(tidymodels)
 
-use_python('C:/ProgramData/Anaconda3/python.exe', T)
-
-set.seed(279)
-theme_set(theme_bw())
-
-data(iris)
-iris <- as_tibble(iris)
-
-lm_model <- linear_reg() %>% 
-  set_engine('lm')
-```
 
 ### Some Set Up
 
 I will be using the iris data set:
 
-```{r iris-prev}
+
+{% highlight r %}
 head(iris)
-```
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## # A tibble: 6 x 5
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+##          <dbl>       <dbl>        <dbl>       <dbl> <fct>  
+## 1          5.1         3.5          1.4         0.2 setosa 
+## 2          4.9         3            1.4         0.2 setosa 
+## 3          4.7         3.2          1.3         0.2 setosa 
+## 4          4.6         3.1          1.5         0.2 setosa 
+## 5          5           3.6          1.4         0.2 setosa 
+## 6          5.4         3.9          1.7         0.4 setosa
+{% endhighlight %}
 
 It is appropriate to create a test and training partition, even when using CV procedures. 
 
-```{r iris-dim}
+
+{% highlight r %}
 dim(iris)
-```
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## [1] 150   5
+{% endhighlight %}
 
 Splitting the iris data set using the `rsample` framework. 
 
-```{r iris-split}
+
+{% highlight r %}
 iris_split <- initial_split(iris, prob = 0.8)
 iris_train <- training(iris_split)
 iris_test  <- testing(iris_split)
 
 dim(iris_train)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## [1] 113   5
+{% endhighlight %}
+
+
+
+{% highlight r %}
 dim(iris_test)
-```
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## [1] 37  5
+{% endhighlight %}
 
 
 ### Leave One Out CV
@@ -78,7 +103,8 @@ Use on data sets expected to be "small". Here, I would judge a data set as small
 #### Leave One Out CV in R
 
 
-```{r loocv_r}
+
+{% highlight r %}
 err <- c()
 
 # for each observation in our data set
@@ -93,13 +119,20 @@ for (i in 1:nrow(iris_train)) {
 
 # report the average squared residual
 print(round(mean(err), 4))
-```
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## [1] 0.7609
+{% endhighlight %}
 
 
 #### Leave One Out CV in Python
 
 
-```{python loocv_py, echo = T, results = 'hide'}
+
+{% highlight python %}
 import numpy as np
 import pandas as pd
 from sklearn import linear_model
@@ -131,13 +164,20 @@ for i in range(0, arr.shape[0]):
   
   # Quantitate the mean square error for each model fit
   err.append(metrics.mean_squared_error([y], yhat))
-```
+{% endhighlight %}
 
 Printing the RMSE error. 
 
-```{python loocv_py_res}
+
+{% highlight python %}
 print(round(sum(err)/len(err), 4))
-```
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## 0.7609
+{% endhighlight %}
   
   
 ### Leave **p** Out CV
@@ -148,21 +188,39 @@ In this exhaustive method, we leave some **p** observations out of the model fit
 
 As a quick example of how this pairing works, consider this data set of 5 entries:
 
-```{r spl_data, echo=FALSE}
-some_data <- data.frame(predictor = 1:5, response = LETTERS[1:5])
-print(some_data)
-```
+
+{% highlight text %}
+##   predictor response
+## 1         1        A
+## 2         2        B
+## 3         3        C
+## 4         4        D
+## 5         5        E
+{% endhighlight %}
 
 A leave **p = 2** CV method would mean that we fit a model which leaves the following observations out as it iterates though:
 
-```{r spl_data_pairs, echo=FALSE}
-for (i in 1:nrow(some_data)) {
-  for (j in 2:nrow(some_data))
-    if (i < j & sum(i,j) < 7) {
-      print(some_data[c(i,j),])
-    }
-}
-```
+
+{% highlight text %}
+##   predictor response
+## 1         1        A
+## 2         2        B
+##   predictor response
+## 1         1        A
+## 3         3        C
+##   predictor response
+## 1         1        A
+## 4         4        D
+##   predictor response
+## 1         1        A
+## 5         5        E
+##   predictor response
+## 2         2        B
+## 3         3        C
+##   predictor response
+## 2         2        B
+## 4         4        D
+{% endhighlight %}
 
 Using combinatorics we can figure out how many total models will be fitted. Order does not matter, so it's 
 5! / (2! * (5 - 2)!). 
@@ -174,7 +232,8 @@ In a Leave One Out approach we would only produce 5 models.
 So that was only for a data set of 5 variables. How many models do we produce as our data set increases from 5, to 20, 50, or 100?
 
 
-```{r ltocv_plt}
+
+{% highlight r %}
 exhaustive_cv <- data.frame(records = 5:100) %>%
   mutate(models = factorial(records) / (2 * factorial(records - 2)))
 
@@ -185,11 +244,14 @@ exhaustive_cv %>%
        y = '# of Models Generated for Cross-Validation',
        title = 'Leave p Cross-Validation Models Generated per Data Set Size', 
        subtitle = 'For p = 2')
-```
+{% endhighlight %}
+
+![testing](/blog/addons/2020-09-25-Cross_Validation/ltocv_plt-1.png)
 
 5000 models are generated for data set with 100 observations. For modern computation, 5000 iterations is easily churned through. Though, a data set of 100 observations is very small for the type of Data Science tasks commonly done. This is just for **p = 2** as well...
 
-```{r lpocv_plt}
+
+{% highlight r %}
 large_p <- expand.grid(records = 5:100, p = 2:5) %>%
   mutate(models = factorial(records) / (p * factorial(records - p)),
          p = factor(p))
@@ -202,7 +264,9 @@ large_p %>%
        title = 'Leave p Out Cross-Validation Models Generated per Data Set Size',
        subtitle = 'For p = [2, 3, 4, 5]') +
   scale_y_continuous(breaks = scales::pretty_breaks(8))
-```
+{% endhighlight %}
+
+![testing](/blog/addons/2020-09-25-Cross_Validation/lpocv_plt-1.png)
 
 I logarithmically transformed the y-axis to ensure that the data is view-able. It's clear that the number of models explode as **p** grows, and this is just for a data set of 100 observations.
 
@@ -227,18 +291,40 @@ I will continue using the Iris data set. Additionally, I will follow the play bo
 
 #### k Fold CV in R
 
-```{r kFoldCV_r}
+
+{% highlight r %}
 iris_folds <- vfold_cv(iris_train, v = 10)
 
 lm_fit <- lm_model %>%
   fit_resamples(Petal.Length ~ Sepal.Length, resamples = iris_folds)
 
 lm_fit
-```
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## # Resampling results
+## # 10-fold cross-validation 
+## # A tibble: 10 x 4
+##    splits           id     .metrics         .notes          
+##    <list>           <chr>  <list>           <list>          
+##  1 <split [101/12]> Fold01 <tibble [2 x 3]> <tibble [0 x 1]>
+##  2 <split [101/12]> Fold02 <tibble [2 x 3]> <tibble [0 x 1]>
+##  3 <split [101/12]> Fold03 <tibble [2 x 3]> <tibble [0 x 1]>
+##  4 <split [102/11]> Fold04 <tibble [2 x 3]> <tibble [0 x 1]>
+##  5 <split [102/11]> Fold05 <tibble [2 x 3]> <tibble [0 x 1]>
+##  6 <split [102/11]> Fold06 <tibble [2 x 3]> <tibble [0 x 1]>
+##  7 <split [102/11]> Fold07 <tibble [2 x 3]> <tibble [0 x 1]>
+##  8 <split [102/11]> Fold08 <tibble [2 x 3]> <tibble [0 x 1]>
+##  9 <split [102/11]> Fold09 <tibble [2 x 3]> <tibble [0 x 1]>
+## 10 <split [102/11]> Fold10 <tibble [2 x 3]> <tibble [0 x 1]>
+{% endhighlight %}
 
 The Tidymodels package has made k-Fold CV in R rather succinct. Our RMSE calculation is automatically calculated by the method. Our metric is embedded in a tibble. 
 
-```{r kFoldCV_r_RMSE}
+
+{% highlight r %}
 lm_fit %>% 
   mutate(RMSE = 
            unlist(
@@ -253,13 +339,23 @@ lm_fit %>%
          ) %>%
   
   summarise(avg_RMSE = round(mean(RMSE), 4))
-```
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## # A tibble: 1 x 1
+##   avg_RMSE
+##      <dbl>
+## 1    0.854
+{% endhighlight %}
 
 #### k Fold CV in Python
 
 The k-Fold CV procedure called by R Tidymodels is not exactly the same as what is called by scikit-learn, therefore I do not expect the average RMSE to be the same. 
 
-```{python kFoldCV_py}
+
+{% highlight python %}
 from sklearn.model_selection import cross_val_score 
 arr = r.iris_train
 reg = linear_model.LinearRegression()
@@ -271,7 +367,13 @@ scores = cross_val_score(estimator = reg, X = obs.values.reshape(-1, 1), y = res
 # flipping the signs
 scores = scores * -1
 print(round(scores.mean(), 4))
-```
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## 0.8909
+{% endhighlight %}
 
 Scikit-Learn has a made an API to calculate the RMSE from a model object, the predictors, and the response value using a cross-validation approach. The API method assumes that the returned metric is to be used in broad application where we optimize by maximizing the metric, and therefore the sign is flipped. It did confuse me at first, but reading through this GitHub [ticket](https://github.com/scikit-learn/scikit-learn/issues/2439) helped clarify the rationale.
 
