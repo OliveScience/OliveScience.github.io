@@ -17,7 +17,7 @@ Cross-Validation is an analytical method for assessing how a modeling technique 
   - Leave **p** Out Cross-Validation: [Explanation](Cross-Validation-in-R-and-Python.html#leave-p-out-cv)
   - k-Fold Cross Validation: [R](Cross-Validation-in-R-and-Python.html#k-fold-cv-in-r) and [Python](Cross-Validation-in-R-and-Python.html#k-fold-cv-in-python)
   
-Which is the best method for my task? Well, that depends. Leave p Out Cross-Validation can be computationally expensive, and maybe you can glean the same info from a 80/20 hold out cross validation. Perhaps the modeling task needs to meet strict prediction criteria before being deployed into production, so maybe you'll consider i-Nested k-Fold CV. It will be up to the Data Scientist to determine how they want to validate the performance of their models. Below I show case how each method is implemented in R and Python. Click on the programming language next to any method to skip ahead to that method's implementation. 
+You might be asking, "Which is the best method for my task?". Well, that depends. Leave p Out Cross-Validation can be computationally expensive, and maybe you can glean the same info from a 80/20 hold out cross validation. Perhaps the modeling task needs to meet strict prediction criteria before being deployed into production, so maybe you'll consider i-Nested k-Fold CV. It will be up to the Data Scientist to determine how they want to validate the performance of their models. Below I show case how each method is implemented in R and Python. Click on the programming language next to any method to skip ahead to that method's implementation. 
 
 ## How to Cross Validate
 
