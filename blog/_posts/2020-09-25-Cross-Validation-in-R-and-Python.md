@@ -11,7 +11,7 @@ In this post you will learn what Cross-Validation is, and how to do it in R and 
 
 ## What is Cross-Validation
 
-Cross-Validation is an analytical method for assessing how a modeling technique might generalize to new data gathered separately from the data set used to build the model. The technique can be referred to as CV, rotation estimation, or out-of-sample testing. CV draws upon techniques of random sampling and applies them to model validation within supervised learning task. There are several different methods for implementing Cross-Validation.
+Cross-Validation is an analytical method for assessing how a modeling technique might generalize to new data gathered separately from the data set used to build the model. The technique can be referred to as CV, rotation estimation, or out-of-sample testing. CV draws upon techniques of random sampling and applies them to model validation within supervised learning tasks. There are several different methods for implementing Cross-Validation.
 
   - Leave One Out Cross-Validation: [R](Cross-Validation-in-R-and-Python.html#leave-one-out-cv-in-r) and [Python](Cross-Validation-in-R-and-Python.html#leave-one-out-cv-in-python)
   - Leave **p** Out Cross-Validation: [Explanation](Cross-Validation-in-R-and-Python.html#leave-p-out-cv)
