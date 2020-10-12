@@ -6,6 +6,7 @@ bigimg: /blog/addons/2020-09-25-Cross_Validation/cv_banner_img.jpg
 tags: [cross-validation, cross, validation, cv, kfold, vfold, loocv, lpocv, kfoldcv, R, RStudio, reticulate, python, scikitlearn, sklearn, tidymodels, rmse, linear, models, iris, data, science, scientist]
 ---
 **Reading time: 13 min, 41 sec**
+
 In this post you will learn what Cross-Validation is, and how to do it in R and Python.  
 
 ## What is Cross-Validation
