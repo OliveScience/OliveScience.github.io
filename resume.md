@@ -8,6 +8,20 @@ subtitle: Masters of Statistics, BS in Mathematics and Chemistry
 ## Objective
 I am interested in developing myself into the Lead Data Scientist within your organization. I began my career as a pharmaceutical lab chemist. In my former roles, the core of my technical philosophy was shaped through application of the scientific method. I specifically acquired a taste for deciphering, analyzing, and summarizing data. Ultimately, my interests led me to seek out Statistics. The past two years I have been able to study statistical theory while implementing practical solutions within businesses. The interplay of my academic experience and professional training has has helped me build a pragmatic technical foundation that is sensitive to business resources. Below you will find my qualifications, education, contact details, and work experience.
 
+## Relevant Experience and Projects
+
+- **Junior Data Analyst plus 4 years of professional experience**
+    - 3 years of scientific industry experience
+    - More than 1 year of business analytics experience
+
+- **Forecasting Dashboard** 
+    - Forecasted future sales performance of produce across major US markets.
+    - Tech stack: R, tidyverse, Facebook AI Prophet, Shiny
+
+- **Question and Answer Semantic Analysis**
+    - Developed tool to parse user submitted questions and subsequently recommend resolved help ticketsrelated to question
+    - Tech stack: R, xgboost, NLP, topicmodels, GCP, kubernetes, PostgreSQL, Ubuntu18.04, nginx, Shiny
+
 ## Key Skills
 
 - ***R Statistical Software***
