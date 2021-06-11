@@ -1,0 +1,51 @@
+---
+title: "Multivariate Analysis and Visualization using muvis"
+author: "Joseph Oliveira"
+date: "5/27/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(muvis)
+library(igraph)
+
+data('NHANES')
+```
+
+
+# Kicking off
+
+When I first ran the preprocessing fucntion below it errored out. I couldn't believe my luck! The paper/package is only 3 years old and it's already incompatible. After digging through the `data_preproc` function and manually reproducing the error, I realized that the fix was to change a logical check on factor type data. The `apply` family of functions strips the factor data type off. What remains is a character vector. So I updated the `is.factor` check to a `is.character` check. Why was this change made to R????
+
+## Preprocessing the data
+
+```{r}
+nhanes <- data_preproc(NHANES, levels = 15, detect.outliers = TRUE,alpha = 0.5)
+```
+
+
+```{r}
+plot_assoc(nhanes, vars = c("LBXVIE", "LBXTC"))
+```
+
+## GGM for Continuous data
+
+The following example constructs a GGM by intersecting the `glasso` and `sin` algorithms. What are these algorithms?
+
+  - ~~Was missing library, `evd`. Installed.~~
+  - ~~Was missing dependencies; `evd` and `igraph.` Called explicitly.~~
+  - A few functions below are from the `igraph` library:
+    - `clusters`, `induced.subgraph`, and `V`
+
+```{r}
+nhanes2 <- nhanes
+nhanes2$SEQN <- NULL
+
+nhanes2_ggm <- ggm(nhanes2, significance = 0.05, rho = 0.15, community = T, methods = c("glasso", "sin"), plot = F)
+grph_clusters <- clusters(nhanes2_ggm$graph)
+new_ggm <- induced.subgraph(nhanes2_ggm$graph, V(nhanes2_ggm$graph)[which(grph_clusters$membership == which.max(grph_clusters$csize))])
+ggm_vis <- graph_vis(new_ggm, plot = T, filetype = "png", filename = "nhanes_ggm")
+
+```
+

@@ -1,0 +1,153 @@
+---
+title: "Multivariate Analysis and Visualization using muvis"
+author: "Joseph Oliveira"
+date: "5/27/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(muvis)
+library(tidyverse)
+data('NHANES')
+```
+
+Just following along with the paper, and I get this error.
+```{r}
+nhanes <- data_preproc(NHANES, is.cat = cat_list, detect.outliers = F,alpha = 0.5)
+```
+
+I plucked out the functions I think lead up to this error.
+
+```{r}
+nhanes <- data_preproc(NHANES, levels = 15, detect.outliers = F,alpha = 0.5)
+
+
+Mode <- function(x) {
+        ux <- unique(x)
+        ux <- ux[which(!is.na(ux))]
+        ux[which.max(tabulate(match(x, ux)))]
+}
+
+
+impute.continuous <- function(x) {
+        x <- as.numeric(x)
+        x[is.na(x)] = mean(x, na.rm = T)
+        x
+}
+
+impute.factor <- function(x) {
+        x <- as.factor(as.character(x))
+        x[is.na(x)] = Mode(x)
+        x
+}
+
+cont.cat.spec <- function(x, is.cat) {
+        x <- data.frame(x)
+        ls <- c(1:ncol(x))
+        t <- sapply(ls, function(i) (!(is.numeric(x[, i]) | is.cat[i])))
+        if (sum(t) != 0) {
+            ls <- ls[t]
+            x <- x[-ls]
+            is.cat <- is.cat[-ls]
+        }
+        x[, is.cat] <- data.frame(sapply(x[, is.cat], as.factor))
+        x <- data.frame(x)
+        x <- sapply(x, as.numeric)
+        x <- data.frame(x)
+        if (sum(is.cat) != 0) {
+            if (sum(is.cat) > 1) 
+                binding <- apply(data.frame(x[, is.cat]), 2, 
+                  as.factor)
+            else {
+                binding <- data.frame(as.factor(t[, which(is.cat == 
+                  T)]))
+                colnames(binding) <- colnames(x)[which(is.cat == 
+                  T)]
+            }
+            x <- data.frame(x)
+            binding <- data.frame(binding)
+            x <- cbind(x[, !is.cat], binding)
+        }
+        x
+}
+
+is.cat.function <- function(var) {
+        return(!length(unique(var[!is.na(var)])) > levels)
+}
+
+```
+
+Apply the function here, and manually work thru to debug.
+```{r}
+levels = 5
+df <- cont.cat.spec(data.frame(NHANES), sapply(data.frame(NHANES), is.cat.function))
+
+alpha = 0.5
+df2 <- df[apply(df, 1, function(x) (sum(is.na(x))/length(x)) <= 
+        alpha), ]
+
+df2_vec <- c()
+nha_vec <- c()
+as.data.frame(
+  lapply(df2, function(x) {
+                            if (is.numeric(x)) 
+                            #impute.continuous(x)
+                            "num"
+                            #append(df2_vec, head(x, 1))
+                            else if (is.factor(x)) 
+                            "fact"
+  }
+    )
+)
+
+is.factor(df2[,"RIAGENDR"]) 
+```
+
+```{r}
+length(lapply(NHANES, function(x) if (is.numeric(x) == T) 
+    #impute.continuous(x)
+    ""
+    #append(df2_vec, head(x, 1))
+#else if (is.factor(x) == T) 
+#    impute.factor(x)
+) )  
+```
+
+I was able to get down to the root of the error. I can't convert the data into a dataframe, because the `is.factor` in the `lapply` is actually checking a character vector and there the `lapply` returns a `NULL` for that part. 
+
+Checking the difference. The workaround by generating logical vector for is.cat
+
+```{r}
+
+inner_join((df2 %>%
+  summarise(across(.fns = function(x) mean(x, na.rm = T))) %>%
+  pivot_longer(everything(), names_to = "cols", values_to = "na_ct")),
+(NHANES %>%
+  summarise(across(.fns = function(x) mean(x, na.rm = T)))%>%
+  pivot_longer(everything(), names_to = "cols", values_to = "na_ct")), 
+by = "cols") %>%
+  mutate(diff = na_ct.x - na_ct.y) %>%
+  filter(diff != 0)
+
+
+data.frame(NHANES)%>%
+  select(where(is.character))
+df %>%
+  select(where(is.character))
+df2 %>%
+  select(where(is.character))
+NHANES %>%
+  select(where(is.character))
+
+cat_list <- colnames(NHANES) %in% colnames(df %>%
+  select(where(is.character)))
+
+
+```
+
+```{r}
+df2 %>%
+  select(RIAGENDR)
+```
+
